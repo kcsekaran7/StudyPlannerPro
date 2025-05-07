@@ -2,7 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import { initializeGapiClient, initializeGisClient } from "./hooks/useTasks";
+import { initializeGisClient } from "./hooks/use-google";
+import { initializeGapiClient } from "./hooks/use-google";
 
 const waitForGapi = ()=>{
     return new Promise<void>((resolve, reject) => {

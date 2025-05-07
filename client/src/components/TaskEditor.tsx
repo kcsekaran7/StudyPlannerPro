@@ -6,7 +6,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Calendar } from "lucide-react";
 import { Task } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
-import { useSyncTasks, useDeleteTask ,initializeGisClient,isGisInitialized} from "@/hooks/useTasks";
+import { useSyncTasks, useDeleteTask} from "@/hooks/useTasks";
+import { initializeGisClient } from "@/hooks/use-google";
+import { isGisInitialized } from "@/hooks/use-google";
 
 import {
   Dialog,
@@ -55,12 +57,17 @@ const SUGGESTED_TAGS = [
   "ChapTest",
   "DPP",
   "PYP",
+  "AITS",
+  "Test",
+  "Class",
+  "RP Sir",
+  "PhaseTest"
 ];
 
 // Form validation schema
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  subject: z.enum(["Math","Physics","Chemistry"],{required_error: "Please select a subject"}),
+  subject: z.enum(["Math","Physics","Chemistry","Other"],{required_error: "Please select a subject or other option"}),
   duration: z.coerce.number().min(1, "Duration must be at least 1 minute"),
   description: z.string().optional(),
   resources: z.array(z.string()).optional() ,
@@ -94,7 +101,7 @@ export function TaskEditor({ isOpen, onOpenChange, task, onSuccess }: TaskEditor
     defaultValues: task
       ? {
           title: task.title,
-          subject: task.subject as "Math" | "Physics" | "Chemistry",
+          subject: task.subject as "Math" | "Physics" | "Chemistry" | "Other",
           duration: task.duration,
           description: task.description || "",
           resources: task.resources ?task.resources.split(",").map(s=>s.trim()).filter(Boolean):[],
@@ -116,7 +123,7 @@ export function TaskEditor({ isOpen, onOpenChange, task, onSuccess }: TaskEditor
     if (task) {
       form.reset({
         title: task.title,
-        subject: task.subject as "Math" | "Physics" | "Chemistry",
+        subject: task.subject as "Math" | "Physics" | "Chemistry"| "Other",
         duration: task.duration,
         description: task.description || "",
         resources: task.resources ? task.resources.split(",").map(s => s.trim()).filter(Boolean) : [],
@@ -242,6 +249,7 @@ export function TaskEditor({ isOpen, onOpenChange, task, onSuccess }: TaskEditor
                         <SelectItem value="Math">Math</SelectItem>
                         <SelectItem value="Physics">Physics</SelectItem>
                         <SelectItem value="Chemistry">Chemistry</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   <FormMessage />

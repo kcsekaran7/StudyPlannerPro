@@ -3,7 +3,10 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { formatDuration } from "@/lib/dates";
 import { STATUS_CONFIG } from "@/lib/constants";
-import { useUpdateTaskStatus,isSignedIn,signIn, initializeGisClient } from "@/hooks/useTasks";
+import { useUpdateTaskStatus } from "@/hooks/useTasks";
+import { isSignedIn } from "@/hooks/use-google";
+import { signIn } from "@/hooks/use-google";
+import { initializeGisClient } from "@/hooks/use-google";
 import { Book, Clock, Edit2,Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
